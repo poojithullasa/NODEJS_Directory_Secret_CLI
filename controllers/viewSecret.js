@@ -12,7 +12,9 @@ exports.viewSecret = (request, response) => {
     response.send(output);
   } else {
     const output = secretResponse.secretResponse;
-    output.value.push(values);
+    values.forEach((value) => {
+      output.value.push(value);
+    });
     response.send(output);
   }
 };
