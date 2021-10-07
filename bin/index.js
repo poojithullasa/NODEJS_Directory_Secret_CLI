@@ -10,20 +10,21 @@ program
   .description(
     "This command list all one level items under the specified path, and their type (Node or Secret)"
   )
-  .action(() => {
-    console.log("Secret List");
+  .argument("<vault>", "Name of the vault")
+  .argument("<path>", "Path of the Secret/Node")
+  .action((vault, path) => {
+    console.log("Secret List", vault, path);
   });
 
 program
   //   .command("secret")
   .command("view")
   .description("The Command is used to view the contents of the secrets")
-  .action(() => {
-    console.log("Secret View");
+  .argument("<vault>", "Name of the vault")
+  .argument("<path>", "Path of the Secret/Node")
+  .action((vault, path) => {
+    console.log("Secret View", vault, path);
   });
-
-program.requiredOption("-v, --vault <vault>", "Name of the vault");
-program.requiredOption("-p, --path <path>", "Path of the Secret/Node");
 
 program.addOption(
   new Option(
