@@ -3,7 +3,15 @@ const path = require("path");
 const outputMessage = require("../constants/responses");
 
 exports.listSecret = (request, response) => {
-  const location = path.join("/", request.query.vault, request.query.path);
+  const vault = request.query.vault;
+  const file = request.query.path;
+  if (!fs.existsSync(path.join("/", vault))) {
+    response.send(`The Vault "${vault}" doesn't exists`);
+  }
+  const location = path.join("/", vault, file);
+  if (!fs.existsSync(location)) {
+    response.send(`The file "${file}" in  Vault "${vault}" doesn't exists`);
+  }
   const files = this.getFiles(location);
   const secrets = this.getSecrets(location);
   if (files.length == undefined || secrets.length == undefined) {
