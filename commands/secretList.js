@@ -23,7 +23,7 @@ function outputList(response) {
     } else {
       response.result.forEach((element) => {
         console.log(
-          chalk.bold.greenBright(`${element.name}     ${element.entityType}`)
+          chalk.bold.yellowBright(`${element.name}     ${element.entityType}`)
         );
       });
     }
