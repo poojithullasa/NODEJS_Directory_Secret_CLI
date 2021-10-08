@@ -8,22 +8,22 @@ exports.secretList = async (vault, path) => {
 
 function outputList(response) {
   if (typeof response == "string") {
-    console.log(chalk.redBright(response));
+    console.log(chalk.bold.redBright(response));
   } else if (typeof response == "number") {
-    console.log(chalk.redBright(`Error COde: ${response}`));
+    console.log(chalk.bold.redBright(`Error COde: ${response}`));
   } else {
     if (response.result == undefined) {
       if (response.nodes.errno == "-20" || response.secrets.errno == "-20") {
         console.log(
-          chalk.redBright("Secret can be viewed using secret view command")
+          chalk.bold.redBright("Secret can be viewed using secret view command")
         );
       } else {
-        console.log(response);
+        console.log(chalk.bold.redBright(response));
       }
     } else {
       response.result.forEach((element) => {
         console.log(
-          chalk.greenBright(`${element.name}     ${element.entityType}`)
+          chalk.bold.greenBright(`${element.name}     ${element.entityType}`)
         );
       });
     }
