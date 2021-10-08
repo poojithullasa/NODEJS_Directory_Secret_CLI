@@ -3,7 +3,15 @@ const path = require("path");
 const secretResponse = require("../constants/responses");
 
 exports.viewSecret = (request, response) => {
-  const location = path.join("/", request.query.vault, request.query.path);
+  const vault = request.query.vault;
+  const secret = request.query.path;
+  if (!fs.existsSync(path.join("/", vault))) {
+    response.send(`The Vault "${vault}" doesn't exists`);
+  }
+  const location = path.join("/", vault, secret);
+  if (!fs.existsSync(location)) {
+    response.send(`The secret "${secret}" in  Vault "${vault}" doesn't exists`);
+  }
   const values = this.readFile(location);
   if (values.length == undefined) {
     const output = secretResponse.errorResponse;
