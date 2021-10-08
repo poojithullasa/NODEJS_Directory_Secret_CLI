@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const secretResponse = require("../constants/output");
+const secretResponse = require("../constants/responses");
 
 exports.viewSecret = (request, response) => {
   const location = path.join("/", "Vault", "/Secret4");
@@ -12,6 +12,7 @@ exports.viewSecret = (request, response) => {
     response.send(output);
   } else {
     const output = secretResponse.secretResponse;
+    if (output.value.length != 0) output.value = [];
     values.forEach((value) => {
       output.value.push(value);
     });

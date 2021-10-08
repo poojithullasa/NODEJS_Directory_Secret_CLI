@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const outputMessage = require("../constants/output");
+const outputMessage = require("../constants/responses");
 
 exports.listSecret = (request, response) => {
   const location = path.join("/", "Vault", "/");
@@ -14,6 +14,7 @@ exports.listSecret = (request, response) => {
     response.send(output);
   } else {
     const output = outputMessage.successResponse;
+    if (output.result.length != 0) output.result = [];
     files.forEach((file) => {
       output.result.push({ entityType: "node", name: file });
     });
