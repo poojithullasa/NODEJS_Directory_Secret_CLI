@@ -3,7 +3,7 @@ const path = require("path");
 const secretResponse = require("../constants/responses");
 
 exports.viewSecret = (request, response) => {
-  const location = path.join("/", "Vault", "/Secret4");
+  const location = path.join("/", request.query.vault, request.query.path);
   const values = this.readFile(location);
   if (values.length == undefined) {
     const output = secretResponse.errorResponse;

@@ -3,7 +3,7 @@ const path = require("path");
 const outputMessage = require("../constants/responses");
 
 exports.listSecret = (request, response) => {
-  const location = path.join("/", "Vault", "/");
+  const location = path.join("/", request.query.vault, request.query.path);
   const files = this.getFiles(location);
   const secrets = this.getSecrets(location);
   if (files.length == undefined || secrets.length == undefined) {
