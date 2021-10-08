@@ -1,11 +1,7 @@
-#! /usr/bin/env node
 const { Command, Option } = require("commander");
 const program = new Command();
 
-program.version("1.0.0");
-
 program
-  //   .command("secret")
   .command("list")
   .description(
     "This command list all one level items under the specified path, and their type (Node or Secret)"
@@ -17,7 +13,6 @@ program
   });
 
 program
-  //   .command("secret")
   .command("view")
   .description("The Command is used to view the contents of the secrets")
   .argument("<vault>", "Name of the vault")
@@ -34,6 +29,6 @@ program.addOption(
   ).choices(["json", "csv", "table"])
 );
 
-program.parse();
+program.parse(process.argv);
 
 const options = program.opts();
