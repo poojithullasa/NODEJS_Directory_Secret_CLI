@@ -30,7 +30,9 @@ const interactiveList = (response, vault, path) => {
   response.result.forEach((element) => {
     options.push(`${element.name}     ${element.entityType}`);
   });
-  options.push("back");
+  if (path != "/") {
+    options.push("back");
+  }
   options.push("exit");
   inquirer
     .prompt([
