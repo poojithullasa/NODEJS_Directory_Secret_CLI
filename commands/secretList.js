@@ -1,12 +1,13 @@
 const chalk = require("chalk");
+const inquirer = require("inquirer");
 const { apiCall } = require("../constants/apiCall");
 
 exports.secretList = async (vault, path) => {
   const response = await apiCall("/secret/list", path, vault);
-  outputList(response);
+  outputList(response, vault, path);
 };
 
-function outputList(response) {
+function outputList(response, vault, path) {
   if (typeof response == "string") {
     console.log(chalk.bold.redBright(response));
   } else if (typeof response == "number") {
@@ -14,18 +15,53 @@ function outputList(response) {
   } else {
     if (response.result == undefined) {
       if (response.nodes.errno == "-20" || response.secrets.errno == "-20") {
-        console.log(
-          chalk.bold.redBright("Secret can be viewed using secret view command")
-        );
+        secretError();
       } else {
         console.log(chalk.bold.redBright(response));
       }
     } else {
-      response.result.forEach((element) => {
-        console.log(
-          chalk.bold.yellowBright(`${element.name}     ${element.entityType}`)
-        );
-      });
+      interactiveList(response, vault, path);
     }
   }
+}
+
+const interactiveList = (response, vault, path) => {
+  const options = [];
+  response.result.forEach((element) => {
+    options.push(`${element.name}     ${element.entityType}`);
+  });
+  options.push("back");
+  options.push("exit");
+  inquirer
+    .prompt([
+      {
+        name: "path",
+        message: "Select the options",
+        type: "list",
+        choices: options,
+      },
+    ])
+    .then((answers) => {
+      if (answers.path == "exit") {
+        process.exit(0);
+      } else if (answers.path.includes("secret")) {
+        secretError();
+      } else if (answers.path == "back") {
+        const array = path.split("/");
+        const location = array.slice(0, array.length - 2);
+        const newLocation = location.length <= 1 ? "/" : location.join("/");
+        this.secretList(vault, newLocation);
+      } else {
+        const location = answers.path.split("     ");
+        path = path[path.length - 1] == "/" ? path : path + "/";
+        const newLocation = path + location[0] + "/";
+        this.secretList(vault, newLocation);
+      }
+    });
+};
+
+function secretError() {
+  console.log(
+    chalk.bold.redBright("Secret can be viewed using secret view command")
+  );
 }
