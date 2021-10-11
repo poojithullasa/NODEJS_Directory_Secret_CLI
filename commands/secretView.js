@@ -22,6 +22,8 @@ const table = new Table({
   },
 });
 import { Parser } from "json2csv";
+import { spinner } from "../constants/ora.js";
+const animation = spinner();
 
 export const secretView = async (vault, path, format) => {
   const response = await apiCall("/secret/view", path, vault);
@@ -30,9 +32,11 @@ export const secretView = async (vault, path, format) => {
 
 function outputView(response, format) {
   if (typeof response == "string") {
-    console.log(chalk.bold.redBright(response));
+    animation.text = chalk.bold.redBright(response);
+    animation.fail();
   } else if (typeof response == "number") {
-    console.log(chalk.bold.redBright(`Error COde: ${response}`));
+    animation.text = chalk.bold.redBright(`Error COde: ${response}`);
+    animation.fail();
   } else {
     const position = 0;
     if (response.value == undefined) {
@@ -40,15 +44,16 @@ function outputView(response, format) {
         Object.keys(response.secret).length === 0 &&
         response.secret.constructor === Object
       ) {
-        console.log(chalk.bold.greenBright("No Data is present in secret"));
+        animation.text = chalk.bold.greenBright("No Data is present in secret");
+        animation.warn();
       } else if (response.secret.errno == "-21") {
-        console.log(
-          chalk.bold.redBright(
-            "Path does not point to lead level secret. Please provide correct path to secret"
-          )
+        animation.text = chalk.bold.redBright(
+          "Path does not point to lead level secret. Please provide correct path to secret"
         );
+        animation.fail();
       } else {
-        console.log(chalk.bold.redBright(response));
+        animation.text = chalk.bold.redBright(response);
+        animation.fail();
       }
     } else {
       if (format == "table") {
@@ -68,7 +73,8 @@ function tableFormat(data, position, format) {
   for (let i = position; i < end; i++) {
     table.push([data[i].username, data[i].password]);
   }
-  console.log(chalk.bold.blueBright(table.toString()));
+  animation.text = chalk.bold.blueBright(table.toString());
+  animation.succeed();
   interactiveView(data, position, format);
 }
 
@@ -76,15 +82,17 @@ function csvFormat(data, position, format) {
   const json2csvParser = new Parser();
   const end = position + 2 < data.length ? position + 2 : data.length;
   const csv = json2csvParser.parse(data.slice(position, end));
-  console.log(chalk.bold.yellowBright(csv));
+  animation.text = chalk.bold.yellowBright(csv);
+  animation.succeed();
   interactiveView(data, position, format);
 }
 
 function jsonFormat(data, position, format) {
   const end = position + 2 < data.length ? position + 2 : data.length;
-  console.log(
-    chalk.bold.cyanBright(JSON.stringify(data.slice(position, end), null, 2))
+  animation.text = chalk.bold.cyanBright(
+    JSON.stringify(data.slice(position, end), null, 2)
   );
+  animation.succeed();
   interactiveView(data, position, format);
 }
 

@@ -1,6 +1,8 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
 import { apiCall } from "../constants/apiCall.js";
+import { spinner } from "../constants/ora.js";
+const animation = spinner();
 
 export const secretList = async (vault, path) => {
   const response = await apiCall("/secret/list", path, vault);
@@ -9,15 +11,18 @@ export const secretList = async (vault, path) => {
 
 function outputList(response, vault, path) {
   if (typeof response == "string") {
-    console.log(chalk.bold.redBright(response));
+    animation.text = chalk.bold.redBright(response);
+    animation.fail();
   } else if (typeof response == "number") {
-    console.log(chalk.bold.redBright(`Error COde: ${response}`));
+    animation.text = chalk.bold.redBright(`Error COde: ${response}`);
+    animation.fail();
   } else {
     if (response.result == undefined) {
       if (response.nodes.errno == "-20" || response.secrets.errno == "-20") {
         secretError();
       } else {
-        console.log(chalk.bold.redBright(response));
+        animation.text = chalk.bold.redBright(response);
+        animation.fail();
       }
     } else {
       interactiveList(response, vault, path);
@@ -63,7 +68,8 @@ const interactiveList = (response, vault, path) => {
 };
 
 function secretError() {
-  console.log(
-    chalk.bold.redBright("Secret can be viewed using secret view command")
+  animation.text = chalk.bold.redBright(
+    "Secret can be viewed using secret view command"
   );
+  animation.fail();
 }
