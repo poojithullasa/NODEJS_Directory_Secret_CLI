@@ -1,8 +1,29 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { apiCall } from "../constants/apiCall";
+import { apiCall } from "../constants/apiCall.js";
+import Table from "cli-table";
+const table = new Table({
+  chars: {
+    top: "═",
+    "top-mid": "╤",
+    "top-left": "╔",
+    "top-right": "╗",
+    bottom: "═",
+    "bottom-mid": "╧",
+    "bottom-left": "╚",
+    "bottom-right": "╝",
+    left: "║",
+    "left-mid": "╟",
+    mid: "─",
+    "mid-mid": "┼",
+    right: "║",
+    "right-mid": "╢",
+    middle: "│",
+  },
+});
+import { Parser } from "json2csv";
 
-exports.secretView = async (vault, path, format) => {
+export const secretView = async (vault, path, format) => {
   const response = await apiCall("/secret/view", path, vault);
   outputView(response, format);
 };
@@ -42,26 +63,6 @@ function outputView(response, format) {
 }
 
 function tableFormat(data, position, format) {
-  const Table = require("cli-table");
-  const table = new Table({
-    chars: {
-      top: "═",
-      "top-mid": "╤",
-      "top-left": "╔",
-      "top-right": "╗",
-      bottom: "═",
-      "bottom-mid": "╧",
-      "bottom-left": "╚",
-      "bottom-right": "╝",
-      left: "║",
-      "left-mid": "╟",
-      mid: "─",
-      "mid-mid": "┼",
-      right: "║",
-      "right-mid": "╢",
-      middle: "│",
-    },
-  });
   table.push(["User Name", "Password"]);
   const end = position + 2 < data.length ? position + 2 : data.length;
   for (let i = position; i < end; i++) {
@@ -72,7 +73,6 @@ function tableFormat(data, position, format) {
 }
 
 function csvFormat(data, position, format) {
-  const { Parser } = require("json2csv");
   const json2csvParser = new Parser();
   const end = position + 2 < data.length ? position + 2 : data.length;
   const csv = json2csvParser.parse(data.slice(position, end));

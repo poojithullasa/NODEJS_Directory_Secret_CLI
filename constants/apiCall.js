@@ -1,6 +1,6 @@
 import axios from "axios";
 
-exports.apiCall = async (url, path, vault) => {
+export const apiCall = async (url, path, vault) => {
   const response = await axios({
     method: "GET",
     baseURL: "http://localhost:3000",

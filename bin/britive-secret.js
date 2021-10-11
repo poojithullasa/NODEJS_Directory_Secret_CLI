@@ -1,7 +1,7 @@
-const { Command, Option } = require("commander");
+import { Command, Option } from "commander";
 const program = new Command();
-const { secretList } = require("../commands/secretList");
-const { secretView } = require("../commands/secretView");
+import { secretList } from "../commands/secretList.js";
+import { secretView } from "../commands/secretView.js";
 
 program
   .command("list")

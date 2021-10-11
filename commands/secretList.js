@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { apiCall } from "../constants/apiCall";
+import { apiCall } from "../constants/apiCall.js";
 
-exports.secretList = async (vault, path) => {
+export const secretList = async (vault, path) => {
   const response = await apiCall("/secret/list", path, vault);
   outputList(response, vault, path);
 };
