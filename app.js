@@ -1,10 +1,10 @@
-const express = require("express");
+import express from "express";
 
-const secretRoutes = require("./routes/secret");
+import { router } from "./routes/secret.js";
 
 const app = express();
 
-app.use("/secret", secretRoutes);
+app.use("/secret", router);
 
 app.use("/", (request, response) => {
   response.status(404).send({

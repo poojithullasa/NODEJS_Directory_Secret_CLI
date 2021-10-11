@@ -1,8 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const secretResponse = require("../constants/responses");
+import fs from "fs";
+import path from "path";
+import secretResponse from "../constants/responses.js";
 
-exports.viewSecret = (request, response) => {
+export const viewSecret = (request, response) => {
   const vault = request.query.vault;
   const secret = request.query.path;
   if (!fs.existsSync(path.join("/", vault))) {
@@ -12,7 +12,7 @@ exports.viewSecret = (request, response) => {
   if (!fs.existsSync(location)) {
     response.send(`The secret "${secret}" in  Vault "${vault}" doesn't exists`);
   }
-  const values = this.readFile(location);
+  const values = readFile(location);
   if (values.length == undefined) {
     const output = secretResponse.errorResponse;
     output.route = "/secret/view";
@@ -28,7 +28,7 @@ exports.viewSecret = (request, response) => {
   }
 };
 
-exports.readFile = (path) => {
+const readFile = (path) => {
   try {
     const data = fs.readFileSync(path, "utf-8");
     return JSON.parse(data);

@@ -1,4 +1,4 @@
-const { default: axios } = require("axios");
+import axios from "axios";
 
 exports.apiCall = async (url, path, vault) => {
   const response = await axios({

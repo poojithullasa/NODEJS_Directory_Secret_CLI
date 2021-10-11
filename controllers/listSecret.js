@@ -1,8 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const outputMessage = require("../constants/responses");
+import fs from "fs";
+import path from "path";
+import outputMessage from "../constants/responses.js";
 
-exports.listSecret = (request, response) => {
+export const listSecret = (request, response) => {
   const vault = request.query.vault;
   const file = request.query.path;
   if (!fs.existsSync(path.join("/", vault))) {
@@ -12,8 +12,8 @@ exports.listSecret = (request, response) => {
   if (!fs.existsSync(location)) {
     response.send(`The file "${file}" in  Vault "${vault}" doesn't exists`);
   }
-  const files = this.getFiles(location);
-  const secrets = this.getSecrets(location);
+  const files = getFiles(location);
+  const secrets = getSecrets(location);
   if (files.length == undefined || secrets.length == undefined) {
     const output = outputMessage.failureResponse;
     output.nodes = files;
@@ -33,7 +33,7 @@ exports.listSecret = (request, response) => {
   }
 };
 
-exports.getFiles = (path) => {
+const getFiles = (path) => {
   try {
     const files = fs
       .readdirSync(path, { withFileTypes: true })
@@ -45,7 +45,7 @@ exports.getFiles = (path) => {
   }
 };
 
-exports.getSecrets = (path) => {
+const getSecrets = (path) => {
   try {
     const secrets = fs
       .readdirSync(path, { withFileTypes: true })

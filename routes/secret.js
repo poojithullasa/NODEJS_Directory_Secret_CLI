@@ -1,11 +1,9 @@
-const express = require("express");
-const { viewSecret } = require("../controllers/viewSecret");
-const { listSecret } = require("../controllers/listSecret");
+import express from "express";
+import { viewSecret } from "../controllers/viewSecret.js";
+import { listSecret } from "../controllers/listSecret.js";
 
-const router = express.Router();
+export const router = express.Router();
 
 router.get("/view", viewSecret);
 
 router.get("/list", listSecret);
-
-module.exports = router;

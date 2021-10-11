@@ -1,6 +1,6 @@
-const chalk = require("chalk");
-const inquirer = require("inquirer");
-const { apiCall } = require("../constants/apiCall");
+import chalk from "chalk";
+import inquirer from "inquirer";
+import { apiCall } from "../constants/apiCall";
 
 exports.secretList = async (vault, path) => {
   const response = await apiCall("/secret/list", path, vault);
@@ -52,12 +52,12 @@ const interactiveList = (response, vault, path) => {
         const array = path.split("/");
         const location = array.slice(0, array.length - 2);
         const newLocation = location.length <= 1 ? "/" : location.join("/");
-        this.secretList(vault, newLocation);
+        secretList(vault, newLocation);
       } else {
         const location = answers.path.split("     ");
         path = path[path.length - 1] == "/" ? path : path + "/";
         const newLocation = path + location[0] + "/";
-        this.secretList(vault, newLocation);
+        secretList(vault, newLocation);
       }
     });
 };

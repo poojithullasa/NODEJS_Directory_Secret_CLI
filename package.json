@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": "./bin/britive.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app"

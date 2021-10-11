@@ -1,6 +1,6 @@
-const chalk = require("chalk");
-const inquirer = require("inquirer");
-const { apiCall } = require("../constants/apiCall");
+import chalk from "chalk";
+import inquirer from "inquirer";
+import { apiCall } from "../constants/apiCall";
 
 exports.secretView = async (vault, path, format) => {
   const response = await apiCall("/secret/view", path, vault);

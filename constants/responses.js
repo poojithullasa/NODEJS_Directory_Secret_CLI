@@ -1,4 +1,4 @@
-exports.successResponse = {
+const successResponse = {
   result: [],
   pagination: {
     next: "",
@@ -6,13 +6,13 @@ exports.successResponse = {
   },
 };
 
-exports.failureResponse = {
+const failureResponse = {
   route: "",
   nodes: "",
   secrets: "",
 };
 
-exports.secretResponse = {
+const secretResponse = {
   entityType: "secret",
   name: "DB1",
   secretType: "DB",
@@ -20,7 +20,14 @@ exports.secretResponse = {
   value: [],
 };
 
-exports.errorResponse = {
+const errorResponse = {
   route: "",
   secret: "",
+};
+
+export default {
+  successResponse,
+  failureResponse,
+  secretResponse,
+  errorResponse,
 };
