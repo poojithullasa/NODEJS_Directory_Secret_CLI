@@ -8,15 +8,21 @@ program
   .description(
     "This command list all one level items under the specified path, and their type (Node or Secret)"
   )
-  .argument("<vault>", "Name of the vault")
-  .argument("<path>", "Path of the Secret/Node")
-  .action((vault, path) => secretList(vault, path));
+  .argument("<vault>", "Please provide vault ID")
+  .argument("[path]", "Please provide path")
+  .addOption(
+    new Option("-t, --type [type]", "Please provide type").choices([
+      "node",
+      "secret",
+    ])
+  )
+  .action((vault, path, options) => secretList(vault, path, options.type));
 
 program
   .command("view")
   .description("The Command is used to view the contents of the secrets")
-  .argument("<vault>", "Name of the vault")
-  .argument("<path>", "Path of the Secret/Node")
+  .argument("<vault>", "Please provide vault ID")
+  .argument("<path>", "Please provide path of secret")
   .addOption(
     new Option(
       "-f, --format <type>",
