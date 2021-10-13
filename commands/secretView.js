@@ -25,7 +25,12 @@ import { spinner } from "../constants/ora.js";
 const animation = spinner();
 
 export const secretView = async (vault, path, format) => {
+  animation.text = "Getting data, Please wait";
+  animation.color = "yellow";
+  animation.start();
   const response = await postApiCall(path, vault);
+  animation.text = "";
+  animation.stop();
   if (response.value == undefined) {
     animation.text = chalk.bold.redBright(`Secret doesn't exists at ${path}`);
     animation.fail();

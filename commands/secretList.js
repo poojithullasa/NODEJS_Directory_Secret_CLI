@@ -26,7 +26,12 @@ import { spinner } from "../constants/ora.js";
 const animation = spinner();
 
 export const secretList = async (vault, path, type, format) => {
+  animation.text = "Getting data, Please wait";
+  animation.color = "yellow";
+  animation.start();
   const response = await getApiCall(vault, path, type);
+  animation.text = "";
+  animation.stop();
   interactiveList(response, vault, path, type, format);
 };
 
