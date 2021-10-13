@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import inquirer from "inquirer";
 import { postApiCall } from "../constants/apiCall.js";
 import Table from "cli-table";
 const table = new Table({
@@ -47,7 +46,7 @@ function tableFormat(data) {
   table.push(["User Name", "URL", "Password"]);
   table.push([data.username, data.url, data.password]);
   animation.succeed();
-  console.log(chalk.bold.blueBright(table.toString()));
+  console.log(chalk.bold.greenBright(table.toString()));
 }
 
 function csvFormat(data) {
