@@ -1,7 +1,20 @@
 import { Command, Option } from "commander";
 const program = new Command();
+import { tokenArgument, tokenInput } from "../commands/token.js";
 import { secretList } from "../commands/secretList.js";
 import { secretView } from "../commands/secretView.js";
+
+program
+  .command("token")
+  .description("Enter the token key for authentication")
+  .argument("[token]", "Authentication Token")
+  .action((token) => {
+    if (token == undefined) {
+      tokenInput();
+    } else {
+      tokenArgument(token);
+    }
+  });
 
 program
   .command("list")

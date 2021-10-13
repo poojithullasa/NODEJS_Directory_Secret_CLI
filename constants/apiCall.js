@@ -1,6 +1,8 @@
 import axios from "axios";
+import { readToken } from "../commands/token.js";
 
 export const getApiCall = async (vault, path, type) => {
+  const token = readToken();
   const response = await axios({
     method: "GET",
     baseURL: `https://secmgr1.dev.britive-app.com/api/v1/secretmanager/${vault}/secrets`,
@@ -9,7 +11,7 @@ export const getApiCall = async (vault, path, type) => {
       type: type,
     },
     headers: {
-      Authorization: `TOKEN ${process.env.TOKEN}`,
+      Authorization: `TOKEN ${token}`,
     },
   })
     .then(function (response) {
