@@ -16,7 +16,15 @@ program
       "secret",
     ])
   )
-  .action((vault, path, options) => secretList(vault, path, options.type));
+  .addOption(
+    new Option(
+      "-f, --format [type]",
+      "Select output format as per requirement"
+    ).choices(["csv", "table"])
+  )
+  .action((vault, path, options) =>
+    secretList(vault, path, options.type, options.format)
+  );
 
 program
   .command("view")
