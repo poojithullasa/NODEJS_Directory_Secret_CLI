@@ -11,6 +11,8 @@ export const tokenInput = () => {
   inquirer
     .prompt([{ message: "Enter the token key", type: "input", name: "token" }])
     .then((answers) => {
+      animation.text = "Adding token, Please wait";
+      animation.color = "yellow";
       animation.start();
       writeToken(answers.token);
       animation.succeed(chalk.greenBright.bold("Successfully added token"));
@@ -18,7 +20,7 @@ export const tokenInput = () => {
 };
 
 export const tokenArgument = (token) => {
-  animation.text = "Adding token";
+  animation.text = "Adding token, Please wait";
   animation.color = "yellow";
   animation.start();
   writeToken(token);
