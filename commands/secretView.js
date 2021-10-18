@@ -31,8 +31,10 @@ export const secretView = async (vault, path, format) => {
   const response = await postApiCall(path, vault);
   animation.text = "";
   animation.stop();
-  if (response.value == undefined) {
-    animation.text = chalk.bold.redBright(`Secret doesn't exists at ${path}`);
+  if (response.response.data.message != undefined) {
+    animation.text = chalk.bold.redBright(
+      `${response.response.data.errorCode} : ${response.response.data.message} at ${path}`
+    );
     animation.fail();
   } else outputView(response.value, format);
 };
@@ -64,14 +66,4 @@ function csvFormat(data) {
 function jsonFormat(data) {
   animation.text = chalk.bold.cyanBright(JSON.stringify(data, null, 2));
   animation.succeed();
-}
-
-function interactiveView(data, format) {
-  if (format == "table") {
-    tableFormat(data);
-  } else if (format == "csv") {
-    csvFormat(data);
-  } else {
-    jsonFormat(data);
-  }
 }
