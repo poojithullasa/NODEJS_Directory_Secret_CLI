@@ -23,6 +23,7 @@ const table = new Table({
 import { Parser } from "json2csv";
 import { spinner } from "../constants/ora.js";
 const animation = spinner();
+import { errorLog, writeLog } from "../commands/debug.js";
 
 export const secretView = async (vault, path, format) => {
   animation.text = "Getting data, Please wait";
@@ -31,11 +32,23 @@ export const secretView = async (vault, path, format) => {
   const response = await postApiCall(path, vault);
   animation.text = "";
   animation.stop();
+  console.log(response);
   if (response.response.data.message != undefined) {
-    animation.text = chalk.bold.redBright(
-      `${response.response.data.errorCode} : ${response.response.data.message} at ${path}`
-    );
+    if (response.response.data.message == "") {
+      animation.text = chalk.bold.redBright(
+        `${response.response.data.status} : ${response.response.data.error} at ${response.response.data.path}`
+      );
+    } else {
+      animation.text = chalk.bold.redBright(
+        `${response.response.data.errorCode} : ${response.response.data.message} at ${path}`
+      );
+    }
     animation.fail();
+    const error = errorLog;
+    error.command = `britive secret view ${vault} ${path} -f ${format}`;
+    error.response = `response.response.data.errorCode} : ${response.response.data.message} at ${path}`;
+    error.time = new Date().toString();
+    writeLog(error);
   } else outputView(response.value, format);
 };
 
